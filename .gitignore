@@ -1,4 +1,5 @@
-.py[co]
+*.log
+*.py[co]
 .env
 env
 venv

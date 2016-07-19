@@ -12,16 +12,24 @@ log.addHandler(logging.FileHandler(log_filename))
 class BaseClient(object):
     """Simple wrapper around the HubSpot's API"""
     
-    def __init__(self, api_key=None, base_url=None):
+    def __init__(self, api_key=None, base_url=None, portal_id=None, pipeline=None):
         
         if api_key is None:
             raise ValueError, 'Missing HubSpot API Key'
         
+        if portal_id is None:
+            raise ValueError, 'Missing HubSpot Portal ID'
+        
         if base_url is None:
             base_url = 'https://api.hubapi.com'
             
+        if pipeline is None:
+            pipeline = 'default'
+            
         self.api_key = api_key
         self.base_url = base_url
+        self.pipeline = pipeline
+        self.portal_id = portal_id
         self.allowed_status_codes = [200, 404]
             
     def __enter__(self):
@@ -45,12 +53,14 @@ class BaseClient(object):
             r = requests.get(endpoint, params=query_args)
             
         elif method.lower() == 'post':
-            data, headers = kwargs.pop('data'), kwargs.pop('headers', {})
+            data = kwargs.pop('data', {}) 
+            headers = kwargs.pop('headers', {})
+            q_args = kwargs.pop('args', {})
             headers.update({'Content-Type': 'applicaton/json'})
-            r = requests.post(endpoint, headers=headers, json=data)
+            r = requests.post(endpoint, headers=headers, json=data, params=q_args)
             
         elif method.lower() == 'put':
-            data, headers = kwargs.pop('data'), kwargs.pop('headers', {})
+            data, headers = kwargs.pop('data', {}), kwargs.pop('headers', {})
             headers.update({'Content-Type': 'applicaton/json'})
             r = requests.put(endpoint, headers=headers, json=data)
             

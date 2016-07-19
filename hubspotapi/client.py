@@ -3,12 +3,15 @@ from .contacts import Contacts
 from .deals import Deals
 
 class HubSpotClient(object):
-    def __init__(self, api_key, api_url=None):
+    def __init__(self, api_key, api_url=None, portal_id=None, pipeline=None):
         # Register contacts API client
-        self.contacts = Contacts(api_key, api_url)
+        self.contacts = Contacts(api_key, api_url, portal_id, pipeline)
         
         # Register Companies API client 
-        self.companies = Companies(api_key, api_url)
+        self.companies = Companies(api_key, api_url, portal_id, pipeline)
         
         # Register Deals API client
-        self.deals = Deals(api_key, api_url)
+        self.deals = Deals(api_key, api_url, portal_id, pipeline)
+        
+        self.portal_id = portal_id
+        self.pipeline = self.deals.get_app_pipeline()

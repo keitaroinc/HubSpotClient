@@ -56,12 +56,12 @@ class BaseClient(object):
             data = kwargs.pop('data', {}) 
             headers = kwargs.pop('headers', {})
             q_args = kwargs.pop('args', {})
-            headers.update({'Content-Type': 'applicaton/json'})
+            headers.update({'Content-Type': 'application/json'})
             r = requests.post(endpoint, headers=headers, json=data, params=q_args)
             
         elif method.lower() == 'put':
             data, headers = kwargs.pop('data', {}), kwargs.pop('headers', {})
-            headers.update({'Content-Type': 'applicaton/json'})
+            headers.update({'Content-Type': 'application/json'})
             r = requests.put(endpoint, headers=headers, json=data)
             
         elif method.lower() == 'delete':
@@ -71,8 +71,9 @@ class BaseClient(object):
             raise ValueError, 'Missing implementation for %s' % method
         
         if r.status_code not in self.allowed_status_codes:
-            log.error('method:{0}\nurl: {1}\nstatus_code: {2}\ncontent: {3}'\
-                      .format(method, r.url, r.status_code, r.content))
+            log.error('method:{0}\nurl: {1}\nstatus_code: {2}\ncontent: {3}\nrbody:{4}\nrheaders:{5}\nrurl:{6}'\
+                      .format(method, r.url, r.status_code, r.content,
+                              r.request.body, r.request.headers, r.request.url))
             r = None
             
         return r

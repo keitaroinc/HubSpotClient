@@ -10,8 +10,7 @@ class Companies(BaseClient):
     
     def create(self, data, path = '/companies/v2/companies'):
         return self.call(method='POST', data=data, path=path, 
-                         args={'portalId': self.portal_id},
-                         headers={'Accept': 'applicaton/json'})
+                         args={'portalId': self.portal_id})
     
     def update(self, cid, data, path=None):
         if path is None:

@@ -1,3 +1,11 @@
+"""
+Copyright (c) 2016 Keitaro AB
+
+Use of this source code is governed by an MIT license
+that can be found in the LICENSE file or at
+https://opensource.org/licenses/MIT.
+"""
+
 from .companies import Companies
 from .contacts import Contacts
 from .deals import Deals
